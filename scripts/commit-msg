@@ -1,0 +1,10 @@
+#!/bin/sh
+
+branch=$(git symbolic-ref --short HEAD)
+pattern='^(feat|fix|chore|style|docs)/.+'
+
+if ! echo "$branch" | grep -qE "$pattern"; then
+  echo "Error: branch name '$branch' must match <type>/<description>"
+  echo "Types: feat, fix, chore, style, docs"
+  exit 1
+fi
