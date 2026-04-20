@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Run Cypress
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          command: npm run cy:run
+          start: npx vite preview --port 5173
+          wait-on: http://localhost:5173
