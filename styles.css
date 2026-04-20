@@ -5,21 +5,21 @@
 }
 
 :root {
-  --bg:           #0d0d1a;
-  --surface:      #111128;
-  --card:         #171730;
-  --border:       #252545;
-  --accent:       #7c3aed;
-  --accent-hover: #6d28d9;
-  --accent-glow:  rgba(124, 58, 237, 0.35);
-  --cyan:         #22d3ee;
-  --cyan-dim:     rgba(34, 211, 238, 0.15);
-  --cyan-border:  rgba(34, 211, 238, 0.3);
-  --text:         #e2e8f0;
-  --muted:        #64748b;
-  --danger:       #f87171;
-  --danger-dim:   rgba(239, 68, 68, 0.15);
-  --danger-border:rgba(239, 68, 68, 0.3);
+  --bg:           #fffef9;
+  --surface:      #f7f6f1;
+  --card:         #ffffff;
+  --border:       #e2e8f0;
+  --accent:       #c2410c;
+  --accent-hover: #9a3412;
+  --accent-glow:  rgba(194, 65, 12, 0.2);
+  --cyan:         #15803d;
+  --cyan-dim:     rgba(21, 128, 61, 0.1);
+  --cyan-border:  rgba(21, 128, 61, 0.25);
+  --text:         #1c1917;
+  --muted:        #78716c;
+  --danger:       #b91c1c;
+  --danger-dim:   rgba(185, 28, 28, 0.08);
+  --danger-border:rgba(185, 28, 28, 0.25);
 }
 
 body {
@@ -51,9 +51,9 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 14px 24px;
-  background: linear-gradient(135deg, #1a0a3a 0%, #0d0d1a 100%);
+  background: var(--surface);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 2px 24px rgba(124, 58, 237, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   flex-shrink: 0;
 }
 
@@ -61,10 +61,7 @@ body {
   font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: -0.5px;
-  background: linear-gradient(135deg, #a78bfa 0%, #22d3ee 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #1c1917;
 }
 
 .header-actions {
@@ -108,8 +105,8 @@ body {
 }
 
 .sidebar-item.active {
-  background: rgba(124, 58, 237, 0.18);
-  color: #a78bfa;
+  background: rgba(194, 65, 12, 0.1);
+  color: var(--accent);
   font-weight: 600;
 }
 
@@ -141,12 +138,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: border-color 0.15s;
 }
 
 .card:hover {
-  border-color: rgba(124, 58, 237, 0.45);
+  border-color: rgba(194, 65, 12, 0.35);
 }
 
 .card-text {
@@ -202,19 +199,19 @@ body {
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: rgba(34, 211, 238, 0.25);
-  box-shadow: 0 0 12px rgba(34, 211, 238, 0.18);
+  background: rgba(21, 128, 61, 0.18);
+  box-shadow: 0 0 8px rgba(21, 128, 61, 0.15);
 }
 
 .btn-copy {
-  background: rgba(124, 58, 237, 0.15);
-  color: #a78bfa;
-  border: 1px solid rgba(124, 58, 237, 0.3);
+  background: rgba(194, 65, 12, 0.08);
+  color: var(--accent);
+  border: 1px solid rgba(194, 65, 12, 0.25);
   min-width: 64px;
 }
 
 .btn-copy:hover {
-  background: rgba(124, 58, 237, 0.28);
+  background: rgba(194, 65, 12, 0.16);
 }
 
 .btn-delete {
