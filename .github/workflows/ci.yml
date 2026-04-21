@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: [main]
     paths:
@@ -12,16 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t snippets .
+      - name: Start container
+        run: docker run -d -p 8080:80 snippets
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npm run build
       - name: Run Cypress
         uses: cypress-io/github-action@v6
         with:
           install: false
           command: npm run cy:run
-          start: npx vite preview --port 5173
-          wait-on: http://localhost:5173
+          wait-on: http://localhost:8080
