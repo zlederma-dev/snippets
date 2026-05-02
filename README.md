@@ -16,6 +16,14 @@ npm run dev
 - **Delete** — removes a snippet
 - **Load** — sequences all snippets into the clipboard one by one, with a short delay between each
 
+## Deployment
+
+After running `npm run build`, copy the dist folder to your EC2 instance:
+
+```
+scp -i ~/.ssh/<key-name>.pem -r $(pwd)/dist ec2-user@<public-ip>:/app
+```
+
 ## Load + Flycut
 
 The Load button is designed to work with clipboard managers like [Flycut](https://github.com/TermiT/Flycut). When triggered, it writes each snippet to the clipboard 800ms apart, giving Flycut time to capture each entry into its history. Afterward you can page through them with Flycut's clippings shortcut.
