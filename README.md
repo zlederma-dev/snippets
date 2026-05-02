@@ -21,7 +21,7 @@ npm run dev
 After running `npm run build`, copy the dist folder to your EC2 instance:
 
 ```
-scp -i ~/.ssh/EC2_Tutorial.pem -r $(pwd)/dist ec2-user@<public-ip>:/app
+scp -i ~/.ssh/<key-name>.pem -r $(pwd)/dist ec2-user@<public-ip>:/app
 ```
 
 ## Load + Flycut
