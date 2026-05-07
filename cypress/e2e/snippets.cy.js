@@ -13,7 +13,10 @@ describe('Snippets App', () => {
     cy.contains('.sidebar-item', 'All Snippets').should('have.class', 'active');
     cy.contains('.sidebar-item', 'Recent').click();
     cy.contains('.sidebar-item', 'Recent').should('have.class', 'active');
-    cy.contains('.sidebar-item', 'All Snippets').should('not.have.class', 'active');
+    cy.contains('.sidebar-item', 'All Snippets').should(
+      'not.have.class',
+      'active',
+    );
   });
 
   it('shows empty state when no snippets exist', () => {
@@ -21,7 +24,7 @@ describe('Snippets App', () => {
   });
 
   it('deletes a card when Delete is clicked', () => {
-    cy.window().then(win => {
+    cy.window().then((win) => {
       cy.stub(win.navigator.clipboard, 'readText').resolves('Hello world');
     });
     cy.contains('button', 'Paste').click();

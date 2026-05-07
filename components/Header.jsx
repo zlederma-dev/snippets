@@ -15,7 +15,7 @@ export default function Header({ snippets, onPaste }) {
     for (const snippet of snippets) {
       try {
         await navigator.clipboard.writeText(snippet.text);
-        await new Promise(r => setTimeout(r, 800));
+        await new Promise((r) => setTimeout(r, 800));
       } catch (err) {
         console.error('Load failed at snippet:', snippet.id, err);
       }
@@ -26,7 +26,9 @@ export default function Header({ snippets, onPaste }) {
     <header className="header">
       <h1>Snippets</h1>
       <div className="header-actions">
-        <button className="btn btn-primary" onClick={handlePaste}>Paste</button>
+        <button className="btn btn-primary" onClick={handlePaste}>
+          Paste
+        </button>
         <button
           className="btn btn-secondary"
           onClick={handleLoad}

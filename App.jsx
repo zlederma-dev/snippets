@@ -8,14 +8,18 @@ export default function App() {
   const [filter, setFilter] = useState('all');
 
   const addSnippet = (text) => {
-    setSnippets(prev => [{ id: Date.now(), text, createdAt: Date.now() }, ...prev]);
+    setSnippets((prev) => [
+      { id: Date.now(), text, createdAt: Date.now() },
+      ...prev,
+    ]);
   };
 
   const deleteSnippet = (id) => {
-    setSnippets(prev => prev.filter(s => s.id !== id));
+    setSnippets((prev) => prev.filter((s) => s.id !== id));
   };
 
-  const filteredSnippets = filter === 'recent' ? snippets.slice(0, 5) : snippets;
+  const filteredSnippets =
+    filter === 'recent' ? snippets.slice(0, 5) : snippets;
 
   return (
     <div className="app">
