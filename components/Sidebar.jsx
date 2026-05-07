@@ -9,7 +9,7 @@ export default function Sidebar({ filter, onFilterChange }) {
   return (
     <aside className="sidebar">
       <nav>
-        {SECTIONS.map(s => (
+        {SECTIONS.map((s) => (
           <button
             key={s.id}
             className={`sidebar-item ${filter === s.id ? 'active' : ''}`}

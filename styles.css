@@ -5,21 +5,21 @@
 }
 
 :root {
-  --bg:           #fffef9;
-  --surface:      #f7f6f1;
-  --card:         #ffffff;
-  --border:       #e2e8f0;
-  --accent:       #c2410c;
+  --bg: #fffef9;
+  --surface: #f7f6f1;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --accent: #c2410c;
   --accent-hover: #9a3412;
-  --accent-glow:  rgba(194, 65, 12, 0.2);
-  --cyan:         #15803d;
-  --cyan-dim:     rgba(21, 128, 61, 0.1);
-  --cyan-border:  rgba(21, 128, 61, 0.25);
-  --text:         #1c1917;
-  --muted:        #78716c;
-  --danger:       #b91c1c;
-  --danger-dim:   rgba(185, 28, 28, 0.08);
-  --danger-border:rgba(185, 28, 28, 0.25);
+  --accent-glow: rgba(194, 65, 12, 0.2);
+  --cyan: #15803d;
+  --cyan-dim: rgba(21, 128, 61, 0.1);
+  --cyan-border: rgba(21, 128, 61, 0.25);
+  --text: #1c1917;
+  --muted: #78716c;
+  --danger: #b91c1c;
+  --danger-dim: rgba(185, 28, 28, 0.08);
+  --danger-border: rgba(185, 28, 28, 0.25);
 }
 
 body {
@@ -96,7 +96,9 @@ body {
   cursor: pointer;
   font-size: 0.82rem;
   font-family: inherit;
-  transition: background 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s;
 }
 
 .sidebar-item:hover {
@@ -174,7 +176,10 @@ body {
   font-family: inherit;
   font-weight: 600;
   letter-spacing: 0.02em;
-  transition: background 0.14s, box-shadow 0.14s, opacity 0.14s;
+  transition:
+    background 0.14s,
+    box-shadow 0.14s,
+    opacity 0.14s;
 }
 
 .btn:disabled {
@@ -226,6 +231,13 @@ body {
 
 /* ── Scrollbar ─────────────────────────────────────── */
 
-::-webkit-scrollbar        { width: 5px; }
-::-webkit-scrollbar-track  { background: transparent; }
-::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}

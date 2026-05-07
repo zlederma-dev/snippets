@@ -12,7 +12,7 @@ export default function SnippetList({ snippets, onDelete }) {
 
   return (
     <main className="snippet-list">
-      {snippets.map(snippet => (
+      {snippets.map((snippet) => (
         <SnippetCard key={snippet.id} snippet={snippet} onDelete={onDelete} />
       ))}
     </main>
