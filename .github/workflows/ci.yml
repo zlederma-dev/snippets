@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+      - run: npm ci --loglevel verbose
       - name: Run Cypress
         uses: cypress-io/github-action@v6
         with:
