@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "prepare": "cp scripts/commit-msg .git/hooks/commit-msg && chmod +x .git/hooks/commit-msg",
-    "dev": "vite",
+"dev": "vite",
     "build": "vite build",
     "cy:open": "cypress open",
     "cy:run": "cypress run"
