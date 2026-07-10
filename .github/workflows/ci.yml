@@ -17,14 +17,8 @@ jobs:
         run: docker build -t snippets .
       - name: Start container
         run: docker run -d -p 8080:80 snippets
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci --loglevel verbose
       - name: Run Cypress
         uses: cypress-io/github-action@v6
         with:
-          install: false
           command: npm run cy:run
           wait-on: http://localhost:8080
