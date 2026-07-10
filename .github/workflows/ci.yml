@@ -15,10 +15,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build Docker image
         run: docker build -t snippets .
-      - name: Stop previous container
-        run: docker rm -f snippets || true
       - name: Start container
-        run: docker run -d --name snippets -p 8080:80 snippets
+        run: docker run -d -p 8080:80 snippets
       - uses: actions/setup-node@v4
         with:
           node-version: 20
