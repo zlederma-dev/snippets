@@ -10,7 +10,7 @@ on:
 jobs:
   test:
     name: E2E Tests
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64]
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker image
@@ -20,11 +20,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-      - run: npm ci
       - name: Run Cypress
         uses: cypress-io/github-action@v6
         with:
-          install: false
           command: npm run cy:run
           wait-on: http://localhost:8080
