@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - '**/*.jsx'
+      - 'frontend/**/*.jsx'
 
 jobs:
   test:
@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker image
-        run: docker build -t snippets .
+        run: docker build -t snippets ./frontend
       - name: Start container
         run: docker run -d -p 8080:80 snippets
       - uses: actions/setup-node@v4
@@ -23,5 +23,6 @@ jobs:
       - name: Run Cypress
         uses: cypress-io/github-action@v6
         with:
+          working-directory: frontend
           command: npm run cy:run
           wait-on: http://localhost:8080
