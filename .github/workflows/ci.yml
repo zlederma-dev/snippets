@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'frontend/**/*.jsx'
+      - 'backend/**'
 
 jobs:
   test:
@@ -13,10 +14,8 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     steps:
       - uses: actions/checkout@v4
-      - name: Build Docker image
-        run: docker build -t snippets ./frontend
-      - name: Start container
-        run: docker run -d -p 8080:80 snippets
+      - name: Start containers
+        run: docker compose up -d --build
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -26,3 +25,6 @@ jobs:
           working-directory: frontend
           command: npm run cy:run
           wait-on: http://localhost:8080
+      - name: Stop containers
+        if: always()
+        run: docker compose down
