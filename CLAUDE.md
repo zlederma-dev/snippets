@@ -4,7 +4,7 @@
 
 ```
 frontend/    — Vite + React 18 SPA
-backend/     — API server (WIP)
+backend/     — Express API server (in-memory, no auth)
 terraform/   — AWS infrastructure
 .github/     — CI/CD workflows
 scripts/     — deploy helpers (ec2-bootstrap.sh, commit-msg hook)
@@ -37,13 +37,33 @@ Single `styles.css` file. No CSS modules, no inline styles, no utility framework
 
 ### Intentional design decisions
 
-- **No persistence** — snippets are in-memory only. Do not add localStorage or any other persistence.
+- **No persistence** — snippets are in-memory on the backend. Do not add a database, localStorage, or any other persistence.
 - **Load button delay** — the 800ms delay between clipboard writes is deliberate. It gives clipboard managers like Flycut time to capture each entry. Do not remove or "optimize" it.
 - **Recent filter** — shows the top 5 snippets. Simple slice, nothing fancier needed.
 
+## Backend (`backend/`)
+
+### Stack
+
+- Express 4 on Node 20 (ES modules)
+- No database — in-memory array with seed data
+- No authentication
+
+### API routes
+
+- `GET /api/snippets` — return all snippets
+- `POST /api/snippets` — create snippet from `{ text }` body
+- `DELETE /api/snippets/:id` — delete by id
+
+### Docker networking
+
+- Frontend nginx proxies `/api/` to the backend container via Docker DNS (`http://backend:3001`)
+- `docker-compose.yml` at repo root defines both services on a shared bridge network
+- For local dev without Docker, `vite.config.js` proxies `/api` to `localhost:3001`
+
 ## Infrastructure
 
-- Deployed to AWS EC2 via Docker (nginx serving the frontend build)
+- Deployed to AWS EC2 via Docker Compose (frontend + backend containers)
 - Docker images pushed to ECR on merge to main
 - CI runs Cypress E2E tests against the Docker container
 - Self-hosted GitHub Actions runner on EC2
