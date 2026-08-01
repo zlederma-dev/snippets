@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snippets
+  labels:
+    app: snippets
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: snippets
+  template:
+    metadata:
+      labels:
+        app: snippets
+    spec:
+      containers:
+        - name: snippets
+          image: snippets-frontend
+          ports:
+            - containerPort: 80
