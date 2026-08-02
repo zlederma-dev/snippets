@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  labels:
+    app: snippets-backend
+spec:
+  type: ClusterIP
+  selector:
+    app: snippets-backend
+  ports:
+    - port: 3001
+      targetPort: 3001
