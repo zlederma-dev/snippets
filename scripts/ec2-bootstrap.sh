@@ -15,7 +15,7 @@ events {}
 http {
     include /etc/nginx/mime.types;
     server {
-        listen 80 default_server;
+        listen 8080 default_server;
         root /app/dist;
         index index.html;
 
