@@ -1,5 +1,6 @@
 {
   "name": "snippets-backend",
+  "description": "Snippets backend API",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
