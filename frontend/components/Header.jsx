@@ -24,7 +24,7 @@ export default function Header({ snippets, onPaste }) {
 
   return (
     <header className="header">
-      <h1>Snippets</h1>
+      <h1>snippets</h1>
       <div className="header-actions">
         <button className="btn btn-primary" onClick={handlePaste}>
           Paste
