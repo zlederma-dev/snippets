@@ -1,4 +1,4 @@
-name: Deploy Frontend
+name: Build Frontend
 
 on:
   workflow_call:
@@ -56,32 +56,6 @@ jobs:
           docker push $ECR_REGISTRY/snippets/frontend:$IMAGE_TAG
           docker push $ECR_REGISTRY/snippets/frontend:$VERSION
           docker push $ECR_REGISTRY/snippets/frontend:latest
-
-      - name: Deploy to EC2
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        run: |
-          INSTANCE_ID=$(aws ec2 describe-instances \
-            --filters "Name=tag:Name,Values=snippets" "Name=instance-state-name,Values=running" \
-            --query "Reservations[0].Instances[0].InstanceId" \
-            --output text)
-
-          COMMAND_ID=$(aws ssm send-command \
-            --instance-ids "$INSTANCE_ID" \
-            --document-name "AWS-RunShellScript" \
-            --parameters "commands=[
-              'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY',
-              'docker pull $ECR_REGISTRY/snippets/frontend:latest',
-              'docker stop frontend || true',
-              'docker rm frontend || true',
-              'docker run -d --name frontend --network snippets -p 8080:8080 $ECR_REGISTRY/snippets/frontend:latest'
-            ]" \
-            --query "Command.CommandId" \
-            --output text)
-
-          aws ssm wait command-executed \
-            --command-id "$COMMAND_ID" \
-            --instance-id "$INSTANCE_ID"
 
       - name: Create git tag
         run: |
