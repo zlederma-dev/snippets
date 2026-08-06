@@ -2,39 +2,85 @@ name: Deploy
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
+    inputs:
+      service:
+        description: "Service to deploy"
+        required: true
+        type: choice
+        options:
+          - frontend
+          - backend
 
 permissions:
   id-token: write
-  contents: write
 
 jobs:
-  detect-changes:
-    name: Detect Changes
-    if: "!startsWith(github.event.head_commit.message, 'chore(frontend): bump') && !startsWith(github.event.head_commit.message, 'chore(backend): bump')"
+  deploy:
+    name: Deploy to EC2
     runs-on: [self-hosted, Linux, X64]
-    outputs:
-      frontend: ${{ steps.changes.outputs.frontend }}
-      backend: ${{ steps.changes.outputs.backend }}
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v3
-        id: changes
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          filters: |
-            frontend:
-              - 'frontend/**'
-            backend:
-              - 'backend/**'
+          role-to-assume: arn:aws:iam::040982755314:role/github-actions-ecr-push
+          role-session-name: github-actions
+          aws-region: us-east-1
 
-  deploy-frontend:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.frontend == 'true'
-    uses: ./.github/workflows/deploy-frontend.yml
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-  deploy-backend:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.backend == 'true'
-    uses: ./.github/workflows/deploy-backend.yml
+      - name: Get EC2 instance ID
+        id: ec2
+        run: |
+          INSTANCE_ID=$(aws ec2 describe-instances \
+            --filters "Name=tag:Name,Values=snippets" "Name=instance-state-name,Values=running" \
+            --query "Reservations[0].Instances[0].InstanceId" \
+            --output text)
+          echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_OUTPUT
+
+      - name: Deploy backend
+        if: inputs.service == 'backend'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          INSTANCE_ID: ${{ steps.ec2.outputs.INSTANCE_ID }}
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "$INSTANCE_ID" \
+            --document-name "AWS-RunShellScript" \
+            --parameters "commands=[
+              'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY',
+              'docker pull $ECR_REGISTRY/snippets/backend:latest',
+              'docker stop backend || true',
+              'docker rm backend || true',
+              'docker run -d --name backend --network snippets -p 3001:3001 $ECR_REGISTRY/snippets/backend:latest'
+            ]" \
+            --query "Command.CommandId" \
+            --output text)
+
+          aws ssm wait command-executed \
+            --command-id "$COMMAND_ID" \
+            --instance-id "$INSTANCE_ID"
+
+      - name: Deploy frontend
+        if: inputs.service == 'frontend'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          INSTANCE_ID: ${{ steps.ec2.outputs.INSTANCE_ID }}
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "$INSTANCE_ID" \
+            --document-name "AWS-RunShellScript" \
+            --parameters "commands=[
+              'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY',
+              'docker pull $ECR_REGISTRY/snippets/frontend:latest',
+              'docker stop frontend || true',
+              'docker rm frontend || true',
+              'docker run -d --name frontend --network snippets -p 8080:8080 $ECR_REGISTRY/snippets/frontend:latest'
+            ]" \
+            --query "Command.CommandId" \
+            --output text)
+
+          aws ssm wait command-executed \
+            --command-id "$COMMAND_ID" \
+            --instance-id "$INSTANCE_ID"
