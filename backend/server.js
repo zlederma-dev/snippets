@@ -6,7 +6,7 @@ app.use(express.json());
 let snippets = [
   {
     id: 1,
-    text: 'console.log("Hello, world!");',
+    text: 'console.log("hello, world!");',
     createdAt: Date.now() - 3000,
   },
   {
