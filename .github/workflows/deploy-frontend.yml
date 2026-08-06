@@ -6,7 +6,7 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
   build-and-push:
@@ -14,6 +14,21 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     steps:
       - uses: actions/checkout@v4
+
+      - name: Bump patch version
+        id: version
+        working-directory: frontend
+        run: |
+          npm version patch --no-git-tag-version
+          echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add frontend/package.json
+          git commit -m "chore(frontend): bump version to ${{ steps.version.outputs.VERSION }}"
+          git push origin main
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -30,7 +45,18 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
+          VERSION: ${{ steps.version.outputs.VERSION }}
         run: |
-          docker build -t $ECR_REGISTRY/snippets/frontend:$IMAGE_TAG -t $ECR_REGISTRY/snippets/frontend:latest ./frontend
+          docker build \
+            -t $ECR_REGISTRY/snippets/frontend:$IMAGE_TAG \
+            -t $ECR_REGISTRY/snippets/frontend:$VERSION \
+            -t $ECR_REGISTRY/snippets/frontend:latest \
+            ./frontend
           docker push $ECR_REGISTRY/snippets/frontend:$IMAGE_TAG
+          docker push $ECR_REGISTRY/snippets/frontend:$VERSION
           docker push $ECR_REGISTRY/snippets/frontend:latest
+
+      - name: Create git tag
+        run: |
+          git tag "frontend/v${{ steps.version.outputs.VERSION }}"
+          git push origin "frontend/v${{ steps.version.outputs.VERSION }}"

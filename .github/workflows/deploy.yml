@@ -7,11 +7,12 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
   detect-changes:
     name: Detect Changes
+    if: "!startsWith(github.event.head_commit.message, 'chore(frontend): bump') && !startsWith(github.event.head_commit.message, 'chore(backend): bump')"
     runs-on: [self-hosted, Linux, X64]
     outputs:
       frontend: ${{ steps.changes.outputs.frontend }}
