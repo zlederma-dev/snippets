@@ -6,7 +6,7 @@ export default function Header({ snippets, onPaste }) {
       const text = await navigator.clipboard.readText();
       if (text.trim()) onPaste(text);
     } catch (err) {
-      console.error('Clipboard read failed:', err);
+      console.error('Clipboard read failed', err);
       alert('Could not read clipboard. Check browser permissions.');
     }
   };

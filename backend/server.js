@@ -45,5 +45,5 @@ app.delete('/api/snippets/:id', (req, res) => {
 
 const PORT = 3001;
 app.listen(PORT, () => {
-  console.log(`Backend listening on port ${PORT}`);
+  console.log(`Backend on port ${PORT}`);
 });
