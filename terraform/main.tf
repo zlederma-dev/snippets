@@ -130,7 +130,9 @@ resource "aws_instance" "snippets" {
   user_data = <<-EOF
     #!/bin/bash
     sudo yum update -y
-    sudo yum install -y docker
+    sudo yum install -y docker amazon-ssm-agent
+    sudo systemctl enable amazon-ssm-agent
+    sudo systemctl start amazon-ssm-agent
     sudo systemctl enable docker
     sudo systemctl start docker
     sudo usermod -a -G docker ec2-user
