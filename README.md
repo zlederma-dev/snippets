@@ -2,11 +2,17 @@
 
 A minimal clipboard manager web app. Paste, organize, and bulk-reload text snippets.
 
-## Setup
+## Local dev
 
 ```
-npm install
-npm run dev
+cd frontend && npm install && npm run dev
+cd backend && npm install && npm start
+```
+
+Or with Docker Compose:
+
+```
+docker compose up --build
 ```
 
 ## Features
@@ -16,13 +22,19 @@ npm run dev
 - **Delete** — removes a snippet
 - **Load** — sequences all snippets into the clipboard one by one, with a short delay between each
 
+## Architecture
+
+```
+frontend/    — Vite + React 18 SPA served by nginx
+backend/     — Express API server (in-memory, no persistence)
+terraform/   — AWS infrastructure (EC2, IAM, security groups)
+.github/     — CI/CD workflows
+scripts/     — deploy helpers
+```
+
 ## Deployment
 
-After running `npm run build`, copy the dist folder to your EC2 instance:
-
-```
-scp -i ~/.ssh/<key-name>.pem -r $(pwd)/dist ec2-user@<public-ip>:/app
-```
+Deployed to AWS EC2 via Docker Compose. CI pushes Docker images to ECR on merge to main. Deploys are triggered via the **Deploy** workflow (`workflow_dispatch`), which uses SSM to pull and restart containers on the EC2 instance.
 
 ## Load + Flycut
 
