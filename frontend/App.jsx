@@ -1,40 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import SnippetList from './components/SnippetList';
 
+let nextId = 4;
+
+const seedSnippets = [
+  { id: 1, text: 'console.log("hello, world!");', createdAt: Date.now() - 3000 },
+  { id: 2, text: 'const sum = (a, b) => a + b;', createdAt: Date.now() - 2000 },
+  { id: 3, text: 'document.querySelector("#app").textContent = "Ready";', createdAt: Date.now() - 1000 },
+];
+
 export default function App() {
-  const [snippets, setSnippets] = useState([]);
+  const [snippets, setSnippets] = useState(seedSnippets);
   const [filter, setFilter] = useState('all');
 
-  useEffect(() => {
-    fetch('/api/snippets')
-      .then((res) => res.json())
-      .then(setSnippets)
-      .catch((err) => console.error('Failed to load snippets:', err));
-  }, []);
-
-  const addSnippet = async (text) => {
-    try {
-      const res = await fetch('/api/snippets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text }),
-      });
-      const snippet = await res.json();
-      setSnippets((prev) => [snippet, ...prev]);
-    } catch (err) {
-      console.error('Failed to add snippet:', err);
-    }
+  const addSnippet = (text) => {
+    const snippet = { id: nextId++, text, createdAt: Date.now() };
+    setSnippets((prev) => [snippet, ...prev]);
   };
 
-  const deleteSnippet = async (id) => {
-    try {
-      await fetch(`/api/snippets/${id}`, { method: 'DELETE' });
-      setSnippets((prev) => prev.filter((s) => s.id !== id));
-    } catch (err) {
-      console.error('Failed to delete snippet:', err);
-    }
+  const deleteSnippet = (id) => {
+    setSnippets((prev) => prev.filter((s) => s.id !== id));
   };
 
   const filteredSnippets =
