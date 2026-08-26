@@ -141,12 +141,8 @@ resource "aws_instance" "snippets" {
     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 040982755314.dkr.ecr.us-east-1.amazonaws.com
 
     docker pull 040982755314.dkr.ecr.us-east-1.amazonaws.com/snippets/frontend:latest
-    docker pull 040982755314.dkr.ecr.us-east-1.amazonaws.com/snippets/backend:latest
 
-    docker network create snippets
-
-    docker run -d --name backend --network snippets -p 3001:3001 040982755314.dkr.ecr.us-east-1.amazonaws.com/snippets/backend:latest
-    docker run -d --name frontend --network snippets -p 8080:8080 040982755314.dkr.ecr.us-east-1.amazonaws.com/snippets/frontend:latest
+    docker run -d --name frontend -p 8080:8080 040982755314.dkr.ecr.us-east-1.amazonaws.com/snippets/frontend:latest
   EOF
 
   tags = {

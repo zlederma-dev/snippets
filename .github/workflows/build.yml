@@ -12,11 +12,10 @@ permissions:
 jobs:
   detect-changes:
     name: Detect Changes
-    if: "!startsWith(github.event.head_commit.message, 'chore(frontend): bump') && !startsWith(github.event.head_commit.message, 'chore(backend): bump')"
+    if: "!startsWith(github.event.head_commit.message, 'chore(frontend): bump')"
     runs-on: [self-hosted, Linux, X64]
     outputs:
       frontend: ${{ steps.changes.outputs.frontend }}
-      backend: ${{ steps.changes.outputs.backend }}
     steps:
       - uses: actions/checkout@v4
 
@@ -26,15 +25,8 @@ jobs:
           filters: |
             frontend:
               - 'frontend/**'
-            backend:
-              - 'backend/**'
 
   build-frontend:
     needs: detect-changes
     if: needs.detect-changes.outputs.frontend == 'true'
     uses: ./.github/workflows/build-frontend.yml
-
-  build-backend:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.backend == 'true'
-    uses: ./.github/workflows/build-backend.yml

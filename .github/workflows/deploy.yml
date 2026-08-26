@@ -2,14 +2,6 @@ name: Deploy
 
 on:
   workflow_dispatch:
-    inputs:
-      service:
-        description: "Service to deploy"
-        required: true
-        type: choice
-        options:
-          - frontend
-          - backend
 
 permissions:
   id-token: write
@@ -39,31 +31,7 @@ jobs:
             --output text)
           echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_OUTPUT
 
-      - name: Deploy backend
-        if: inputs.service == 'backend'
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          INSTANCE_ID: ${{ steps.ec2.outputs.INSTANCE_ID }}
-        run: |
-          COMMAND_ID=$(aws ssm send-command \
-            --instance-ids "$INSTANCE_ID" \
-            --document-name "AWS-RunShellScript" \
-            --parameters "commands=[
-              'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY',
-              'docker pull $ECR_REGISTRY/snippets/backend:latest',
-              'docker stop backend || true',
-              'docker rm backend || true',
-              'docker run -d --name backend --network snippets -p 3001:3001 $ECR_REGISTRY/snippets/backend:latest'
-            ]" \
-            --query "Command.CommandId" \
-            --output text)
-
-          aws ssm wait command-executed \
-            --command-id "$COMMAND_ID" \
-            --instance-id "$INSTANCE_ID"
-
       - name: Deploy frontend
-        if: inputs.service == 'frontend'
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           INSTANCE_ID: ${{ steps.ec2.outputs.INSTANCE_ID }}
@@ -76,7 +44,7 @@ jobs:
               'docker pull $ECR_REGISTRY/snippets/frontend:latest',
               'docker stop frontend || true',
               'docker rm frontend || true',
-              'docker run -d --name frontend --network snippets -p 8080:8080 $ECR_REGISTRY/snippets/frontend:latest'
+              'docker run -d --name frontend -p 8080:8080 $ECR_REGISTRY/snippets/frontend:latest'
             ]" \
             --query "Command.CommandId" \
             --output text)
