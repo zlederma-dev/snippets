@@ -1,4 +1,25 @@
-# Snippets
+# Purpose
+
+This is a DevOps project. A complex application with many developers working on it needs a way to make quick, reliable changes. This project uses DevOps mentality and techniques to solve that problem for a microservice in an arbitrary CRUD application. 
+
+# Technologies Used
+- Terraform, AWS (ECR, EC2), Docker, Cypress, React, Github Actions
+
+
+
+This project contains:
+- the local development environment for a frontend microservice.
+- containerization of the application with docker
+- good coding practices such as linting/autoformatting/version control. 
+- a github action to run cypress tests against the service in order to help validate a pr
+- github actions to build/test/deploy the resulting docker image to AWS ECR 
+- github action to stop the old container, pull the new one from ECR, and start it.
+- Terraform to source control the EC2 instance hosting the application. 
+
+# Diagram
+# Running the project
+
+
 
 A minimal clipboard manager web app. Paste, organize, and bulk-reload text snippets.
 
