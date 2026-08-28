@@ -13,8 +13,10 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     steps:
       - uses: actions/checkout@v4
-      - name: Start containers
-        run: docker compose up -d --build
+      - name: Build and start container
+        run: |
+          docker build -t snippets-frontend ./frontend
+          docker run -d --name frontend -p 8080:8080 snippets-frontend
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -24,6 +26,8 @@ jobs:
           working-directory: frontend
           command: npm run cy:run
           wait-on: http://localhost:8080
-      - name: Stop containers
+      - name: Stop container
         if: always()
-        run: docker compose down
+        run: |
+          docker stop frontend || true
+          docker rm frontend || true
