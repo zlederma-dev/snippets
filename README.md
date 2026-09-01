@@ -1,6 +1,14 @@
 # Purpose
 
-This is a DevOps project. A complex application with many developers working on it needs a way to make quick, reliable changes. This project uses DevOps mentality and techniques to solve that problem for a microservice in an arbitrary CRUD application. 
+This is a DevOps project. It focuses on the CI/CD and infrastructure around a frontend microservice. 
+
+# Summary
+This project contains: 
+- **Automated testing on every PR** — Cypress E2E tests run in CI before code can merge
+- **Version Bumping** - Once merged the version is bumped, helping keep code straight
+- **Containerized deployment** — Docker image built and pushed to ECR on merge
+- **Infrastructure as code** — EC2 hosting, networking, and ECR provisioned with Terraform
+- **One-click deploys** — manually triggered workflow pulls the latest image and restarts the container in aws
 
 # Technologies
 | Technology | Role |
