@@ -1,6 +1,14 @@
 # Purpose
 
-This is a DevOps project. A complex application with many developers working on it needs a way to make quick, reliable changes. This project uses DevOps mentality and techniques to solve that problem for a microservice in an arbitrary CRUD application. 
+This is a DevOps project. It focuses on the CI/CD and infrastructure around a frontend microservice. 
+
+# Summary
+This project contains: 
+- **Automated testing on every PR** — Cypress E2E tests run in CI and block merges until they pass.
+- **Containerized builds** — A Docker image is built and pushed to AWS ECR on every merge.  
+- **Automatic version bumping** —  Merges to `main` increment the version in `package.json`, tag the Docker image, and create a Git tag. Keeping code, containers, and releases in sync. 
+- **Infrastructure as code** — EC2 instances, networking, and security groups are provisioned with terraform. 
+- **One-click deploys** — A manual workflow pulls the latest image from ECR and restarts the container on the EC2 host for fast, repeatable deployments.
 
 # Technologies
 | Technology | Role |
@@ -86,12 +94,9 @@ Managed with Terraform in [`terraform/`](terraform/).
 ```mermaid
 flowchart LR
   ECR[ECR] -->|pull image| Docker[Docker on EC2]
-  Docker -->|serves frontend on :8080| U[User]
+  Docker -->|serves frontend| U[User]
 
   style ECR    fill:#FFF8E1,stroke:#F57C00,stroke-width:2px,color:#0D1B2A
   style Docker fill:#E3F2FD,stroke:#1976D2,stroke-width:2px,color:#0D1B2A
   style U      fill:#E8EAF6,stroke:#3949AB,stroke-width:2px,color:#0D1B2A
 ```
-
-# Scope
-In the history of this project, there was a backend. Adding this backend added quite a bit of complexity to the whole project. While I learned a lot from this added complexity, I decided to go with the KISS (keep it simple stupid) mentality in software engineering. The purpose of this project is to demonstrate a full pipeline for one microservice, not to show handling multiple microservices in one repo, or to show more networking skills. Constraints. 
