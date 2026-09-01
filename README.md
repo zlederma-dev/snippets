@@ -53,7 +53,8 @@ flowchart LR
   style BLOCK  fill:#FFEBEE,stroke:#C62828,stroke-width:2px,color:#0D1B2A
 ```
 
-### On Merge [`build.yaml`](.github/workflows/build.yaml)
+### On Merge 
+workflow file: [`build.yaml`](.github/workflows/build.yaml)
 
 ```mermaid
 flowchart LR
@@ -67,7 +68,7 @@ flowchart LR
   style ECR  fill:#FFF8E1,stroke:#F57C00,stroke-width:2px,color:#0D1B2A
 ```
 ### Trigger Deployment
-[`deploy.yaml`](.github/workflows/deploy.yaml)
+workflow file: [`deploy.yaml`](.github/workflows/deploy.yaml)
 ```mermaid
 flowchart LR
   U[User] -->|manually triggers deploy workflow| RUN[GitHub Actions Runner]
