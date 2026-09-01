@@ -86,12 +86,9 @@ Managed with Terraform in [`terraform/`](terraform/).
 ```mermaid
 flowchart LR
   ECR[ECR] -->|pull image| Docker[Docker on EC2]
-  Docker -->|serves frontend on :8080| U[User]
+  Docker -->|serves frontend| U[User]
 
   style ECR    fill:#FFF8E1,stroke:#F57C00,stroke-width:2px,color:#0D1B2A
   style Docker fill:#E3F2FD,stroke:#1976D2,stroke-width:2px,color:#0D1B2A
   style U      fill:#E8EAF6,stroke:#3949AB,stroke-width:2px,color:#0D1B2A
 ```
-
-# Scope
-In the history of this project, there was a backend. Adding this backend added quite a bit of complexity to the whole project. While I learned a lot from this added complexity, I decided to go with the KISS (keep it simple stupid) mentality in software engineering. The purpose of this project is to demonstrate a full pipeline for one microservice, not to show handling multiple microservices in one repo, or to show more networking skills. Constraints. 
