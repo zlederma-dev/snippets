@@ -2,11 +2,17 @@
 
 This is a DevOps project. A complex application with many developers working on it needs a way to make quick, reliable changes. This project uses DevOps mentality and techniques to solve that problem for a microservice in an arbitrary CRUD application. 
 
-# Technologies Used
-- Terraform, AWS (ECR, EC2), Docker, Cypress, React, Github Actions
+# Technologies
+| | Technology | Role |
+|---|---|---|
+| 🧪 | Cypress | E2E testing |
+| 🐳 | Docker | Containerization |
+| ⚙️ | GitHub Actions | CI/CD pipelines |
+| 🏗️ | Terraform | Infrastructure as code |
+| 📦 | ECR | Image registry |
+| ☁️ | EC2 | Hosting |
 
-
-
+# Summary
 This project contains:
 - the local development environment for a frontend microservice.
 - containerization of the application with docker
@@ -16,7 +22,9 @@ This project contains:
 - github action to stop the old container, pull the new one from ECR, and start it.
 - Terraform to source control the EC2 instance hosting the application. 
 
-# Pipelines
+# Local development
+
+# CI/CD
 
 ### Raised PR 
 workflow file: [`ci.yaml`](.github/workflows/ci.yaml)
@@ -63,23 +71,8 @@ flowchart LR
   style RUN  fill:#E8F5E9,stroke:#388E3C,stroke-width:2px,color:#0D1B2A
   style EC2  fill:#E3F2FD,stroke:#1976D2,stroke-width:2px,color:#0D1B2A
   ```
-# Running the project
+
+# Local development
+
 # Scope
 In the history of this project, there was a backend. Adding this backend added quite a bit of complexity to the whole project. While I learned a lot from this added complexity, I decided to go with the KISS (keep it simple stupid) mentality in software engineering. The purpose of this project is to demonstrate a full pipeline for one microservice, not to show handling multiple microservices in one repo, or to show more networking skills. Constraints. 
-
-## Local dev
-
-```
-cd frontend && npm install && npm run dev
-cd backend && npm install && npm start
-```
-
-Or with Docker Compose:
-
-```
-docker compose up --build
-```
-
-## Deployment
-
-Deployed to AWS EC2 via Docker Compose. CI pushes Docker images to ECR on merge to main. Deploys are triggered via the **Deploy** workflow (`workflow_dispatch`), which uses SSM to pull and restart containers on the EC2 instance.
