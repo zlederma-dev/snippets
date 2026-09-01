@@ -14,6 +14,22 @@ This is a DevOps project. A complex application with many developers working on 
 
 # Local development
 
+```bash
+cd frontend
+
+npm install          # install dependencies
+npm run dev          # start dev server
+npm run lint         # lint
+npm run format       # autoformat
+
+# containerized
+docker build -t snippets .
+docker run -p 8080:8080 snippets
+
+# e2e tests
+npm run cypress run
+```
+
 # CI/CD
 
 ### Raised PR 
