@@ -4,11 +4,11 @@ This is a DevOps project. It focuses on the CI/CD and infrastructure around a fr
 
 # Summary
 This project contains: 
-- **Automated testing on every PR** — Cypress E2E tests run in CI before code can merge
-- **Version Bumping** - Once merged the version is bumped, helping keep code straight
-- **Containerized deployment** — Docker image built and pushed to ECR on merge
-- **Infrastructure as code** — EC2 hosting, networking, and ECR provisioned with Terraform
-- **One-click deploys** — manually triggered workflow pulls the latest image and restarts the container in aws
+- **Automated testing on every PR** — Cypress E2E tests run in CI and block merges until they pass.
+- **Containerized builds** — A Docker image is built and pushed to AWS ECR on every merge.  
+- **Automatic version bumping** —  Merges to `main` increment the version in `package.json`, tag the Docker image, and create a Git tag. Keeping code, containers, and releases in sync. 
+- **Infrastructure as code** — EC2 instances, networking, and security groups are provisioned with terraform. 
+- **One-click deploys** — A manual workflow pulls the latest image from ECR and restarts the container on the EC2 host for fast, repeatable deployments.
 
 # Technologies
 | Technology | Role |
