@@ -3,14 +3,14 @@
 This is a DevOps project. A complex application with many developers working on it needs a way to make quick, reliable changes. This project uses DevOps mentality and techniques to solve that problem for a microservice in an arbitrary CRUD application. 
 
 # Technologies
-| | Technology | Role |
-|---|---|---|
-| 🧪 | Cypress | E2E testing |
-| 🐳 | Docker | Containerization |
-| ⚙️ | GitHub Actions | CI/CD pipelines |
-| 🏗️ | Terraform | Infrastructure as code |
-| 📦 | ECR | Image registry |
-| ☁️ | EC2 | Hosting |
+| Technology | Role |
+|---|---|
+| Cypress | E2E testing |
+| Docker | Containerization |
+| GitHub Actions | CI/CD pipelines |
+| Terraform | Infrastructure as code |
+| ECR | Image registry |
+| EC2 | Hosting |
 
 # Local development
 
