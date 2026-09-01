@@ -63,7 +63,7 @@ jobs:
 
       - name: Build, tag, and push image
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: 040982755314.dkr.ecr.us-east-1.amazonaws.com
           IMAGE_TAG: ${{ github.sha }}
           VERSION: ${{ steps.version.outputs.VERSION }}
         run: |
